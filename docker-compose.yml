@@ -1,0 +1,77 @@
+version: "3.1"
+
+services:
+  bill-one-1day-postgres:
+    # https://cloud.google.com/sql/docs/postgres/db-versions?hl=ja
+    image: "postgres:13"
+    volumes:
+      - "bill-one-1day-postgres-data:/var/lib/postgresql/data"
+      - "./dockerfiles/postgres/initdb:/docker-entrypoint-initdb.d"
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ""
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+  react-app:
+    build:
+      context: ./react-app/
+    volumes:
+      - ./react-app:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    ports:
+      - "3000:3000"
+    tty: true
+
+  # From: https://github.com/fsouza/fake-gcs-server
+  cloud-storage-emulator:
+    image: fsouza/fake-gcs-server
+    ports:
+      - "4443:4443"
+    volumes:
+      - "./dockerfiles/gcloud-storage-emulator/preload:/data"
+      - "bill-one-1day-cloud-storage:/storage"
+    command: -scheme http --public-host localhost
+
+  gcloud-tasks-emulator:
+    build: dockerfiles/gcloud-tasks-emulator
+    ports:
+      - "127.0.0.1:9090:9090"
+    command:
+      [
+        "start",
+        "--port=9090",
+        "--default-queue=projects/bill-one-1day-intern/locations/asia-northeast1/queues/sender",
+        "--default-queue=projects/bill-one-1day-intern/locations/asia-northeast1/queues/recipient",
+        "--max-retries=1",
+      ]
+
+  # gcloud-tasks-emulatorのコンテナから localhost:8081 でDockerホスト（Mac）上の8081ポートにアクセスするためのハック
+  socat-8081:
+    image: alpine/socat
+    command:
+      [
+        "-d",
+        "tcp-listen:8081,fork,reuseaddr",
+        "tcp-connect:host.docker.internal:8081",
+      ]
+    network_mode: "service:gcloud-tasks-emulator"
+  # gcloud-tasks-emulatorのコンテナから localhost:8082 でDockerホスト（Mac）上の8082ポートにアクセスするためのハック
+  socat-8082:
+    image: alpine/socat
+    command:
+      [
+        "-d",
+        "tcp-listen:8082,fork,reuseaddr",
+        "tcp-connect:host.docker.internal:8082",
+      ]
+    network_mode: "service:gcloud-tasks-emulator"
+
+volumes:
+  bill-one-1day-postgres-data:
+    driver: local
+  bill-one-1day-cloud-storage:
+    driver: local
