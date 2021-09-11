@@ -32,7 +32,7 @@ $ cd /kotlin-app-recipient
 $ ./gradlew run
 
 // kotlin-app-senderの場合
-$ cd /kotlin-app-recipient
+$ cd /kotlin-app-sender
 $ ./gradlew run
 ```
 
