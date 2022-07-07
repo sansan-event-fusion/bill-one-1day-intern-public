@@ -13,15 +13,16 @@ private val migrationSQL: String by lazy {
     val migrationSqlPaths =
         Files.list(Path.of("src/main/resources/db/migration")).filter { it.toString().endsWith(".sql") }.sorted()
             .toList()
-    check(migrationSqlPaths.map { it.fileName.toString().split("__")[0] }
-        .distinct().size == migrationSqlPaths.size) { "マイグレーションファイルのバージョン番号が重複しています。 " }
+    check(
+        migrationSqlPaths.map { it.fileName.toString().split("__")[0] }
+            .distinct().size == migrationSqlPaths.size
+    ) { "マイグレーションファイルのバージョン番号が重複しています。 " }
     migrationSqlPaths.joinToString(";\n") { Files.readString(it) } // SQLファイルの中身を全て結合する。
 }
 
 class Database(private val settings: Settings, private val schema: String) {
 
     fun setUpTable(operations: List<Operation>) {
-
         // CREATE SCHEMA and TABLE
         val dest = DriverManagerDestination(settings.jdbcUrl, null, null)
         dest.connection.autoCommit = false
@@ -50,7 +51,6 @@ class Database(private val settings: Settings, private val schema: String) {
         val dbSetup = DbSetup(dest, ops)
         dbSetup.launch()
     }
-
 }
 
 fun tenantNameIdPrefix(): String {

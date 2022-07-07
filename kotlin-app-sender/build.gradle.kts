@@ -1,14 +1,11 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.io.InputStreamReader
-import java.nio.charset.StandardCharsets
-import kotlin.concurrent.thread
 
 group = "com.sansan.billone"
 version = "0.0.1-SNAPSHOT"
 
-val kotlinVersion = "1.4.32"
+val kotlinVersion = "1.7.0"
 val ktorVersion = "1.5.3"
 val jacksonVersion = "2.12.2"
 val logbackVersion = "1.2.3"
@@ -37,7 +34,7 @@ val jsonFuzzyMatchVersion = "0.4.1"
 plugins {
     java
     application
-    id("org.jetbrains.kotlin.jvm") version "1.4.31"
+    id("org.jetbrains.kotlin.jvm") version "1.7.0"
     id("com.github.johnrengelman.shadow") version "5.2.0"
     id("org.flywaydb.flyway") version "7.6.0"
 }
@@ -92,7 +89,7 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
 }
 
 application {
@@ -113,8 +110,8 @@ tasks.withType<ShadowJar> {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict", "-Xuse-experimental=kotlin.Experimental")
-        jvmTarget = "1.8"
+        freeCompilerArgs = listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn")
+        jvmTarget = "11"
     }
 }
 
@@ -129,27 +126,5 @@ tasks.test {
     maxParallelForks = Integer.parseInt(maxParallelTests)
     testLogging {
         exceptionFormat = TestExceptionFormat.FULL
-    }
-}
-
-tasks.named<JavaExec>("run") {
-    val noPretty: String? by project
-    if (noPretty.isNullOrBlank()) {
-        // JSONのログを見やすく出力する
-        doFirst {
-            val process = ProcessBuilder("pino-pretty").start() // 設定は .pino-prettyrc から読まれる。
-            standardOutput = process.outputStream // 起動するJavaアプリケーションの標準出力をpino-prettyの標準入力に結びつける。
-
-            // よくわからないけど ProcessBuilder で redirectOutput(ProcessBuilder.Redirect.INHERIT) としても標準出力に表示されない。
-            // 仕方ないので別スレッドでプロセスの標準出力を読み出してはprintする。InputStreamReaderを使わないと日本語が文字化けした。
-            thread {
-                InputStreamReader(process.inputStream, StandardCharsets.UTF_8).use { reader ->
-                    var value: Int
-                    while (reader.read().also { value = it } != -1) {
-                        print(value.toChar())
-                    }
-                }
-            }
-        }
     }
 }

@@ -5,5 +5,5 @@ import sender.util.TraceContext
 
 data class DomainEventContext(
     val callUUID: CallUUID,
-    val traceContext: TraceContext,
+    val traceContext: TraceContext
 )

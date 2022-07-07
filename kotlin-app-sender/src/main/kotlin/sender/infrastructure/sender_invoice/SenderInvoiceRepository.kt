@@ -4,7 +4,7 @@ import org.jdbi.v3.core.Handle
 import sender.domain.sender_invoice.SenderInvoice
 
 object SenderInvoiceRepository {
-    fun register(senderInvoice: SenderInvoice, handle:Handle){
+    fun register(senderInvoice: SenderInvoice, handle: Handle) {
         val sql = """
             INSERT INTO sender_invoice (
                 sender_invoice_uuid,

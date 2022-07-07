@@ -1,6 +1,5 @@
 package sender
 
-import sender.testing.testSettings
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import org.assertj.core.api.Assertions.assertThat
@@ -8,10 +7,11 @@ import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Test
 import sender.testing.Database
+import sender.testing.testSettings
 
 class ApplicationTest {
     companion object {
-        private val schemaName = this::class.java.declaringClass.simpleName.toLowerCase()
+        private val schemaName = this::class.java.declaringClass.simpleName.lowercase()
         private val settings = testSettings(schemaName)
         private val database = Database(settings, schemaName)
 

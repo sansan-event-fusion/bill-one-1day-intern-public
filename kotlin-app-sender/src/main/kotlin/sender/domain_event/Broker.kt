@@ -9,7 +9,6 @@ import io.ktor.http.*
 import org.slf4j.LoggerFactory
 import sender.domain.sender_invoice.SenderInvoiceRegistered
 import sender.domain_event.subscriber.SenderInvoiceReflect
-import sender.domain_event.subscriber.Subscriber
 import sender.settings
 import sender.util.buildCloudTasksSettings
 
@@ -19,7 +18,7 @@ class Broker {
 
     companion object {
         val pubsub = mapOf(
-            SenderInvoiceRegistered::class.qualifiedName to listOf(SenderInvoiceReflect()),
+            SenderInvoiceRegistered::class.qualifiedName to listOf(SenderInvoiceReflect())
         )
     }
 
@@ -36,7 +35,8 @@ class Broker {
                     .setUrl("${settings.senderApiUrl}/domain-event-broker/${domainEventContext.callUUID.value}")
                     .setOidcToken(oidcTokenBuilder)
                     .setHttpMethod(HttpMethod.POST)
-                    .build()).build()
+                    .build()
+            ).build()
 
         CloudTasksClient.create(buildCloudTasksSettings()).use { client ->
 
@@ -50,7 +50,6 @@ class Broker {
                         throw e
                     }
                 }
-
             }
         }
     }

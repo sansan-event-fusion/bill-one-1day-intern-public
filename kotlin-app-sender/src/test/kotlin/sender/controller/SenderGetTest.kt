@@ -15,7 +15,7 @@ import sender.testing.testSettings
 
 class SenderGetTest {
     companion object {
-        private val schemaName = this::class.java.declaringClass.simpleName.toLowerCase()
+        private val schemaName = this::class.java.declaringClass.simpleName.lowercase()
         private val settings = testSettings(schemaName)
         private val database = Database(settings, schemaName)
 
@@ -29,22 +29,22 @@ class SenderGetTest {
     @Before
     fun before() {
         database.setUpTable(
-                listOf(
-                        buildSenderOperation(
-                                listOf(SenderTableFixture(), SenderTableFixture()._2人目())
-                        )
+            listOf(
+                buildSenderOperation(
+                    listOf(SenderTableFixture(), SenderTableFixture()._2人目())
                 )
+            )
         )
     }
 
     @Test
     fun `受領アカウント一覧の取得`(): Unit =
-            withTestApplication({ module(true, settings) }) {
-                with(handleRequest(HttpMethod.Get, "/api/sender/senders") {}) {
-                    Assertions.assertThat(response.status()).isEqualTo(HttpStatusCode.OK)
-                    JsonStringAssert.assertThat(response.content)
-                            .jsonMatches(
-                                    """
+        withTestApplication({ module(true, settings) }) {
+            with(handleRequest(HttpMethod.Get, "/api/sender/senders") {}) {
+                Assertions.assertThat(response.status()).isEqualTo(HttpStatusCode.OK)
+                JsonStringAssert.assertThat(response.content)
+                    .jsonMatches(
+                        """
                     [ {
                       "senderUUID" : "389afb90-42cd-4739-a1e1-0062a1d6285c",
                       "fullName" : "送付アカウント"
@@ -52,8 +52,8 @@ class SenderGetTest {
                       "senderUUID" : "553707cc-72d5-4634-b660-6f541102418a",
                       "fullName" : "送付アカウント2"
                     } ]
-            """.trimIndent()
-                            )
-                }
+                        """.trimIndent()
+                    )
             }
+        }
 }

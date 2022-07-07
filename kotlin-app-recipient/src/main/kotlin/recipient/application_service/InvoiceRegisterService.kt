@@ -15,7 +15,7 @@ object InvoiceRegisterService {
         val invoice = Invoice.of(
             args.senderInvoiceUUID,
             args.recipientUUID,
-            args.senderUUID,
+            args.senderUUID
         )
         runInTransaction(args.domainEventContext) { handle ->
             InvoiceRepository.register(invoice, handle)
@@ -29,5 +29,5 @@ data class InvoiceRegisterArgs(
     val recipientUUID: RecipientUUID,
     val senderUUID: SenderUUID,
     val senderSideInvoicePath: StorageObjectPath,
-    val domainEventContext: DomainEventContext,
+    val domainEventContext: DomainEventContext
 )

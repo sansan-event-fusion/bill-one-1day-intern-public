@@ -6,7 +6,6 @@ import com.google.api.gax.grpc.InstantiatingGrpcChannelProvider
 import com.google.cloud.tasks.v2.CloudTasksSettings
 import recipient.settings
 
-
 fun buildCloudTasksSettings(): CloudTasksSettings = CloudTasksSettings.newBuilder().apply {
     if (settings.cloudTasksEmulatorHost != null) {
         // ローカル開発時（テストは除く）はエミュレーターを使う。

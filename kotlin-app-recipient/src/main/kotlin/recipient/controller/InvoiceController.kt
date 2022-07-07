@@ -10,7 +10,6 @@ import recipient.infrastructure.invoice.InvoiceStorage
 import recipient.query_service.InvoiceQueryService
 import java.util.*
 
-
 @Location("/api/recipient/recipient/{recipientUUID}/invoices")
 class InvoiceLocation(
     val recipientUUID: UUID
@@ -21,7 +20,6 @@ class InvoiceUrlLocation(
     val recipientUUID: UUID,
     val invoiceUUID: UUID
 )
-
 
 fun Route.invoiceController() {
     get<InvoiceLocation> {

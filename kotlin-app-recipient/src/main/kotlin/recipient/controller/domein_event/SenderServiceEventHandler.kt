@@ -9,7 +9,8 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-@Location("/event-handler/sender/reflect-sender-invoice") class SenderInvoiceReflectLocation
+@Location("/event-handler/sender/reflect-sender-invoice")
+class SenderInvoiceReflectLocation
 
 fun Route.senderServiceEventHandler() {
     // 課題3

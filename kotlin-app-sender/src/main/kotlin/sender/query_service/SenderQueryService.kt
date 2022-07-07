@@ -22,5 +22,5 @@ object SenderQueryService {
 
 data class SenderGetQueryResult(
     val senderUUID: UUID,
-    val fullName: String,
+    val fullName: String
 )

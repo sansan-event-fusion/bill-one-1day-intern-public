@@ -1,15 +1,11 @@
 package recipient.query_service
 
-import recipient.domain.invoice.RegisteredAt
-import recipient.domain.recipient.RecipientFullName
 import recipient.domain.recipient.RecipientUUID
-import recipient.domain.sender.SenderFullName
 import recipient.util.withHandle
-import java.time.OffsetDateTime
 import java.util.*
 
 object InvoiceQueryService {
-    fun getByRecipientUUID(recipientUUID: RecipientUUID): List<InvoiceQueryGetResult>{
+    fun getByRecipientUUID(recipientUUID: RecipientUUID): List<InvoiceQueryGetResult> {
         val sql = """
             SELECT
                 i.invoice_uuid,

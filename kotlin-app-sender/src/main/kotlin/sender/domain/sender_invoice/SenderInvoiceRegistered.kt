@@ -8,6 +8,6 @@ import sender.util.StorageObjectPath
 data class SenderInvoiceRegistered(
     val senderInvoiceUUID: SenderInvoiceUUID,
     val recipientUUID: RecipientUUID,
-    val senderUUID:SenderUUID,
+    val senderUUID: SenderUUID,
     val senderSideInvoicePath: StorageObjectPath
 ) : DomainEvent

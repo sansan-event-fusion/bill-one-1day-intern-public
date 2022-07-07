@@ -14,7 +14,7 @@ import recipient.testing.testSettings
 
 class InvoicesGetTest {
     companion object {
-        private val schemaName = this::class.java.declaringClass.simpleName.toLowerCase()
+        private val schemaName = this::class.java.declaringClass.simpleName.lowercase()
         private val settings = testSettings(schemaName)
         private val database = Database(settings, schemaName)
 
@@ -28,35 +28,35 @@ class InvoicesGetTest {
     @Before
     fun before() {
         database.setUpTable(
-                listOf(
-                        buildRecipientOperation(listOf(RecipientTableFixture())),
-                        buildSenderOperation(listOf(SenderTableFixture())),
-                        buildInvoiceOperation(listOf(InvoiceTableFixture())),
-                )
+            listOf(
+                buildRecipientOperation(listOf(RecipientTableFixture())),
+                buildSenderOperation(listOf(SenderTableFixture())),
+                buildInvoiceOperation(listOf(InvoiceTableFixture()))
+            )
         )
     }
 
     @Test
     fun `受領アカウントの請求書一覧取得`(): Unit =
-            withTestApplication({ module(true, settings) }) {
-                with(
-                        handleRequest(
-                                HttpMethod.Get,
-                                "/api/recipient/recipient/${RecipientTableFixture().recipient_uuid}/invoices"
-                        ) {}
-                ) {
-                    Assertions.assertThat(response.status()).isEqualTo(HttpStatusCode.OK)
-                    JsonStringAssert.assertThat(response.content)
-                            .jsonMatches(
-                                    """
+        withTestApplication({ module(true, settings) }) {
+            with(
+                handleRequest(
+                    HttpMethod.Get,
+                    "/api/recipient/recipient/${RecipientTableFixture().recipient_uuid}/invoices"
+                ) {}
+            ) {
+                Assertions.assertThat(response.status()).isEqualTo(HttpStatusCode.OK)
+                JsonStringAssert.assertThat(response.content)
+                    .jsonMatches(
+                        """
                 [ {
                   "invoiceUUID" : "cfc3a21f-6ac9-47ff-b76b-6cffad384d0a",
                   "recipientFullName" : "受領アカウント1",
                   "senderFullName" : "送付アカウント",
                   "registeredAt" : "2019-01-01 09:00:00+09"
                 } ]
-            """.trimIndent()
-                            )
-                }
+                        """.trimIndent()
+                    )
             }
+        }
 }

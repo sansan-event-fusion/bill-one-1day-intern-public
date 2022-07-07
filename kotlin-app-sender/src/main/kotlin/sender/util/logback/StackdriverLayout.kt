@@ -5,7 +5,6 @@ import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.contrib.json.classic.JsonLayout
 
-
 class StackdriverLayout : JsonLayout() {
     override fun addCustomDataToJsonMap(map: MutableMap<String, Any>, event: ILoggingEvent) {
         // 参考

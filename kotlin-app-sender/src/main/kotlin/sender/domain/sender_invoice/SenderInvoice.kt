@@ -11,8 +11,8 @@ data class SenderInvoice(
     val senderInvoiceUUID: SenderInvoiceUUID,
     val recipientUUID: RecipientUUID,
     val senderUUID: SenderUUID,
-    val registeredAt: RegisteredAt,
-){
+    val registeredAt: RegisteredAt
+) {
     companion object {
         fun of(recipientUUID: RecipientUUID, senderUUID: SenderUUID) = SenderInvoice(
             SenderInvoiceUUID.random(),
@@ -23,15 +23,13 @@ data class SenderInvoice(
     }
 }
 
-data class SenderInvoiceUUID @JsonCreator(mode = JsonCreator.Mode.DELEGATING) constructor(@JsonValue val value: UUID){
+data class SenderInvoiceUUID @JsonCreator(mode = JsonCreator.Mode.DELEGATING) constructor(@JsonValue val value: UUID) {
     companion object {
         fun random() = SenderInvoiceUUID(UUID.randomUUID())
     }
 }
-data class RegisteredAt  @JsonCreator(mode = JsonCreator.Mode.DELEGATING) constructor(@JsonValue val value: OffsetDateTime){
-    companion object{
+data class RegisteredAt @JsonCreator(mode = JsonCreator.Mode.DELEGATING) constructor(@JsonValue val value: OffsetDateTime) {
+    companion object {
         fun now() = RegisteredAt(OffsetDateTime.now())
     }
 }
-
-

@@ -13,6 +13,7 @@ import io.ktor.routing.get
 import io.ktor.routing.routing
 import io.ktor.server.engine.*
 import io.ktor.util.*
+import org.slf4j.event.Level
 import recipient.controller.domainEventBroker
 import recipient.controller.domein_event.senderServiceEventHandler
 import recipient.util.configureObjectMapper
@@ -22,14 +23,17 @@ import java.io.StringWriter
 import java.time.LocalDate
 import java.util.*
 
-
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-@Suppress("unused") // Referenced in application.conf
+@Suppress("unused")
+// Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false, settingsTest: Settings = settingsFromEnv()) {
-
     settings = settingsTest
+
+    install(CallLogging) {
+        level = Level.INFO
+    }
 
     install(ShutDownUrl.ApplicationCallFeature) {
         // The URL that will be intercepted. You can also use the
@@ -53,8 +57,7 @@ fun Application.module(testing: Boolean = false, settingsTest: Settings = settin
         }
     }
 
-    install(CORS)
-    {
+    install(CORS) {
         method(HttpMethod.Options)
         method(HttpMethod.Put)
         method(HttpMethod.Patch)
@@ -99,7 +102,6 @@ fun Application.module(testing: Boolean = false, settingsTest: Settings = settin
     install(CallId) {
         generate { UUID.randomUUID().toString() }
     }
-
 
     install(DataConversion) {
         convert<UUID> {
@@ -172,7 +174,6 @@ fun Application.module(testing: Boolean = false, settingsTest: Settings = settin
             }
         }
     }
-
 
     routing {
         invoiceController()

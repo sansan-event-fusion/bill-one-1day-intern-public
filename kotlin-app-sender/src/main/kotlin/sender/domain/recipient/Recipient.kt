@@ -6,7 +6,7 @@ import java.util.*
 
 data class Recipient(
     val recipientUUID: RecipientUUID,
-    val recipientFullName: RecipientFullName,
+    val recipientFullName: RecipientFullName
 )
 
 data class RecipientUUID @JsonCreator(mode = JsonCreator.Mode.DELEGATING) constructor(@JsonValue val value: UUID)

@@ -13,7 +13,7 @@ import recipient.testing.testSettings
 
 class SenderInvoiceUrlGetTest {
     companion object {
-        private val schemaName = this::class.java.declaringClass.simpleName.toLowerCase()
+        private val schemaName = this::class.java.declaringClass.simpleName.lowercase()
         private val settings = testSettings(schemaName)
         private val database = Database(settings, schemaName)
 
@@ -32,24 +32,25 @@ class SenderInvoiceUrlGetTest {
                 buildSenderOperation(listOf(SenderTableFixture(), SenderTableFixture()._2人目())),
                 buildInvoiceOperation(
                     listOf(
-                        InvoiceTableFixture(),
+                        InvoiceTableFixture()
                     )
-                ),
+                )
             )
         )
     }
 
     @Test
     fun `請求書URLの取得`(): Unit = withTestApplication({ module(true, settings) }) {
-        with(handleRequest(
-            HttpMethod.Get,
-            "/api/recipient/recipient/${InvoiceTableFixture().recipient_uuid}/invoices/${InvoiceTableFixture().invoice_uuid}/pdf-url"
+        with(
+            handleRequest(
+                HttpMethod.Get,
+                "/api/recipient/recipient/${InvoiceTableFixture().recipient_uuid}/invoices/${InvoiceTableFixture().invoice_uuid}/pdf-url"
+            ) {
+            }
         ) {
-        }) {
             Assertions.assertThat(response.status()).isEqualTo(HttpStatusCode.Found)
             Assertions.assertThat(response.headers.get("Location"))
                 .startsWith("http://localhost:4443/recipient-test-bucket/recipient/${InvoiceTableFixture().recipient_uuid}/invoices/${InvoiceTableFixture().invoice_uuid}.pdf")
         }
     }
-
 }

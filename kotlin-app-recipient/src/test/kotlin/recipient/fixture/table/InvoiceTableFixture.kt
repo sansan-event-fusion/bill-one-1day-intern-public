@@ -11,7 +11,7 @@ data class InvoiceTableFixture(
     val recipient_uuid: UUID = RecipientTableFixture().recipient_uuid,
     val sender_uuid: UUID = SenderTableFixture().sender_uuid,
     val registered_at: OffsetDateTime = OffsetDateTime.parse("2019-01-01T00:00:00Z"),
-    val created_at: OffsetDateTime = OffsetDateTime.parse("2019-01-01T00:00:00Z"),
+    val created_at: OffsetDateTime = OffsetDateTime.parse("2019-01-01T00:00:00Z")
 )
 
 fun buildInvoiceOperation(fixtureAccounts: List<InvoiceTableFixture>): Operation {

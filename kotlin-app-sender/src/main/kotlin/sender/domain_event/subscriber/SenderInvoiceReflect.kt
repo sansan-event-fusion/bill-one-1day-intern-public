@@ -10,7 +10,7 @@ import sender.util.TraceContext
 import sender.util.buildCloudTasksSettings
 import java.nio.charset.StandardCharsets
 
-class SenderInvoiceReflect: Subscriber {
+class SenderInvoiceReflect : Subscriber {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     override fun notify(message: String, traceContext: TraceContext) {
@@ -25,7 +25,8 @@ class SenderInvoiceReflect: Subscriber {
                     .setUrl("${settings.recipientApiUrl}/event-handler/sender/reflect-sender-invoice")
                     .setOidcToken(oidcTokenBuilder)
                     .setHttpMethod(HttpMethod.POST)
-                    .build()).build()
+                    .build()
+            ).build()
 
         CloudTasksClient.create(buildCloudTasksSettings()).use { client ->
             val createdTask = client.createTask(settings.senderServiceQueryPath, task)

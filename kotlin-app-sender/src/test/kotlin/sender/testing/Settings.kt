@@ -6,7 +6,7 @@ import sender.settingsFromEnv
 fun testSettings(schemaName: String) = settingsFromEnv().copy(
     jdbcUrl = testJdbcUrl(),
     environment = "test",
-    schema = schemaName,
+    schema = schemaName
 )
 
 private fun testJdbcUrl() = System.getenv("JDBC_URL")

@@ -16,9 +16,7 @@ import java.util.*
 @Location("/domain-event-broker/{callUUID}")
 class DomainEventBrokerLocation(val callUUID: String)
 fun Route.domainEventBroker() {
-
     post<DomainEventBrokerLocation> {
-
         val targetCallUUID = CallUUID(UUID.fromString(it.callUUID))
 
         deployDomainEvents(targetCallUUID, call.getTraceContext(), call.getDomainEventContext())

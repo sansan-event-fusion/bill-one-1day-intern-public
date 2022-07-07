@@ -4,9 +4,7 @@ import com.ninja_squad.dbsetup.Operations
 import com.ninja_squad.dbsetup.operation.Operation
 import kotlin.reflect.full.memberProperties
 
-
 fun <T : Any> buildLoadingFixturesOperation(fixtures: List<T>, tableName: String): Operation {
-
     val operations = Operations.insertInto(tableName)
 
     fixtures.forEach { fixture ->

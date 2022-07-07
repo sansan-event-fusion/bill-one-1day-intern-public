@@ -10,14 +10,13 @@ import java.net.URL
 import java.nio.channels.Channels
 import java.util.concurrent.TimeUnit
 
-
-//fun createTenantBucketBlobId(tenantNameId: TenantNameId, name: String): BlobId {
+// fun createTenantBucketBlobId(tenantNameId: TenantNameId, name: String): BlobId {
 //    return BlobId.of("tenant-${tenantNameId.value}.${settings.environment}.bill-one.com", "network-service/$name")
-//}
+// }
 //
-//fun createMailInvoiceBucketBlobId(mailReceivedCallUUID: CallUUID, name: String): BlobId {
+// fun createMailInvoiceBucketBlobId(mailReceivedCallUUID: CallUUID, name: String): BlobId {
 //    return BlobId.of(settings.mailInvoiceBucket, "${mailReceivedCallUUID.value}/$name")
-//}
+// }
 
 @Throws(IOException::class)
 fun getStorageObject(blobId: BlobId): ByteArray {
@@ -79,19 +78,24 @@ fun createStorageUrl(targetBlobInfo: BlobInfo): URL {
     }
     val storage = buildServiceClient()
     val signer = ImpersonatedCredentials.create(
-        GoogleCredentials.getApplicationDefault(), settings.serviceAccount, listOf(), listOf(), 60
+        GoogleCredentials.getApplicationDefault(),
+        settings.serviceAccount,
+        listOf(),
+        listOf(),
+        60
     )
     return storage.signUrl(
-        targetBlobInfo, 60, TimeUnit.SECONDS,
+        targetBlobInfo,
+        60,
+        TimeUnit.SECONDS,
         Storage.SignUrlOption.withV4Signature(),
         Storage.SignUrlOption.signWith(signer)
     )
 }
 
-
 data class StorageObjectPath(
     val bucket: String,
-    val path: String,
+    val path: String
 ) {
     companion object {
         fun fromBlobId(blobId: BlobId): StorageObjectPath {

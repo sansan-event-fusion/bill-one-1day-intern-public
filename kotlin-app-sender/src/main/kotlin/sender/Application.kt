@@ -3,7 +3,6 @@
 package sender
 
 import invoiceController
-import sender.util.configureObjectMapper
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
@@ -14,21 +13,26 @@ import io.ktor.routing.get
 import io.ktor.routing.routing
 import io.ktor.server.engine.*
 import io.ktor.util.*
+import org.slf4j.event.Level
 import sender.controller.domainEventBroker
+import sender.util.configureObjectMapper
 import senderController
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.time.LocalDate
 import java.util.*
 
-
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-@Suppress("unused") // Referenced in application.conf
+@Suppress("unused")
+// Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false, settingsTest: Settings = settingsFromEnv()) {
-
     settings = settingsTest
+
+    install(CallLogging) {
+        level = Level.INFO
+    }
 
     install(ShutDownUrl.ApplicationCallFeature) {
         // The URL that will be intercepted. You can also use the
@@ -52,8 +56,7 @@ fun Application.module(testing: Boolean = false, settingsTest: Settings = settin
         }
     }
 
-    install(CORS)
-    {
+    install(CORS) {
         method(HttpMethod.Options)
         method(HttpMethod.Put)
         method(HttpMethod.Patch)
@@ -83,8 +86,10 @@ fun Application.module(testing: Boolean = false, settingsTest: Settings = settin
             }
 
             @OptIn(io.ktor.server.engine.EngineAPI::class)
-            call.respond(@OptIn(io.ktor.util.KtorExperimentalAPI::class) defaultExceptionStatusCode(cause)
-                ?: HttpStatusCode.InternalServerError)
+            call.respond(
+                @OptIn(io.ktor.util.KtorExperimentalAPI::class) defaultExceptionStatusCode(cause)
+                    ?: HttpStatusCode.InternalServerError
+            )
 
             // コントローラテストでの例外発生時にエラー内容を確認したいために、再スローする
             if (testing) {
@@ -96,7 +101,6 @@ fun Application.module(testing: Boolean = false, settingsTest: Settings = settin
     install(CallId) {
         generate { UUID.randomUUID().toString() }
     }
-
 
     install(DataConversion) {
         convert<UUID> {
@@ -169,7 +173,6 @@ fun Application.module(testing: Boolean = false, settingsTest: Settings = settin
             }
         }
     }
-
 
     routing {
         senderController()

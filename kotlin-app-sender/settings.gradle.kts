@@ -4,4 +4,4 @@ pluginManagement {
         mavenCentral()
     }
 }
-rootProject.name = "kotlin-app-sendert"
+rootProject.name = "kotlin-app-sender"

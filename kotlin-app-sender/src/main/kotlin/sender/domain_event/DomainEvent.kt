@@ -12,5 +12,5 @@ data class DomainEventRow(
     val callUUID: UUID,
     val domainEventName: String,
     val message: String,
-    val deployed: Boolean,
+    val deployed: Boolean
 )

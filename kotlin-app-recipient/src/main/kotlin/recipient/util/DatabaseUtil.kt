@@ -1,21 +1,16 @@
 package recipient.util
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.zaxxer.hikari.HikariDataSource
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
-import org.jdbi.v3.core.kotlin.mapTo
 import org.jdbi.v3.core.statement.SqlLogger
 import org.jdbi.v3.core.statement.StatementContext
-import org.jdbi.v3.jackson2.Jackson2Config
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import recipient.domain_event.Broker
 import recipient.domain_event.DomainEventContext
 import recipient.domain_event.DomainEventRepository
 import recipient.settings
-
-
 
 val dataSource: HikariDataSource by lazy {
     val dataSource = HikariDataSource()
@@ -70,8 +65,10 @@ inline fun <T> runInTransaction(domainEventContext: DomainEventContext, crossinl
     } catch (ex: Exception) {
         // タスク作成中に例外が発生した場合、例外をログに出力するのみとして、リクエストは失敗させない。
         // リクエストを失敗させた場合、ユーザーから見ると、エラーが発生したのに変更は反映されている（=トランザクションがコミット済み）状態になって、違和感があるので。
-        runInTransactionLogger.error("ドメインイベントのタスク作成中に例外が発生しました。手動で再発行してください。 callUUID: ${domainEventContext.callUUID.value}",
-            ex)
+        runInTransactionLogger.error(
+            "ドメインイベントのタスク作成中に例外が発生しました。手動で再発行してください。 callUUID: ${domainEventContext.callUUID.value}",
+            ex
+        )
     }
 
     return result

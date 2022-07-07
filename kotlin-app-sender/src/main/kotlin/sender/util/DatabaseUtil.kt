@@ -12,8 +12,6 @@ import sender.domain_event.DomainEventContext
 import sender.domain_event.DomainEventRepository
 import sender.settings
 
-
-
 val dataSource: HikariDataSource by lazy {
     val dataSource = HikariDataSource()
     dataSource.jdbcUrl = settings.jdbcUrl
@@ -67,8 +65,10 @@ inline fun <T> runInTransaction(domainEventContext: DomainEventContext, crossinl
     } catch (ex: Exception) {
         // タスク作成中に例外が発生した場合、例外をログに出力するのみとして、リクエストは失敗させない。
         // リクエストを失敗させた場合、ユーザーから見ると、エラーが発生したのに変更は反映されている（=トランザクションがコミット済み）状態になって、違和感があるので。
-        runInTransactionLogger.error("ドメインイベントのタスク作成中に例外が発生しました。手動で再発行してください。 callUUID: ${domainEventContext.callUUID.value}",
-            ex)
+        runInTransactionLogger.error(
+            "ドメインイベントのタスク作成中に例外が発生しました。手動で再発行してください。 callUUID: ${domainEventContext.callUUID.value}",
+            ex
+        )
     }
 
     return result

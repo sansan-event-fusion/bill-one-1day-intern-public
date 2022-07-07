@@ -8,11 +8,10 @@ import java.util.*
 object DomainEventRepository {
 
     fun publish(domainEvent: DomainEvent, callUUID: CallUUID, handle: Handle) {
-        publish(listOf(domainEvent),  callUUID, handle)
+        publish(listOf(domainEvent), callUUID, handle)
     }
 
-    fun publish(domainEvents: List<DomainEvent>,  callUUID: CallUUID, handle: Handle) {
-
+    fun publish(domainEvents: List<DomainEvent>, callUUID: CallUUID, handle: Handle) {
         val sql = """
             INSERT INTO domain_event (
                 domain_event_uuid,
@@ -37,10 +36,13 @@ object DomainEventRepository {
                 .bind("domainEventUUID", UUID.randomUUID())
                 .bind("callUUID", callUUID.value)
                 .bind("domainEventName", domainEvent.javaClass.kotlin.qualifiedName)
-                .bind("message", PGobject().apply {
-                    type = "json"
-                    value = domainEvent.toJSON()
-                })
+                .bind(
+                    "message",
+                    PGobject().apply {
+                        type = "json"
+                        value = domainEvent.toJSON()
+                    }
+                )
                 .add()
         }
 
@@ -48,7 +50,6 @@ object DomainEventRepository {
     }
 
     fun getByCallUUID(callUUID: CallUUID, handle: Handle): List<DomainEventRow> {
-
         val selectPaymentSQL = """
             SELECT
                 domain_event_uuid as domainEventUUID,

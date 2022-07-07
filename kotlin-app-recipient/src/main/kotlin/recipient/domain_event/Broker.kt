@@ -37,7 +37,8 @@ class Broker {
                     .setUrl("${settings.invoiceApiUrl}/domain-event-broker/${domainEventContext.callUUID.value}")
                     .setOidcToken(oidcTokenBuilder)
                     .setHttpMethod(HttpMethod.POST)
-                    .build()).build()
+                    .build()
+            ).build()
 
         CloudTasksClient.create(buildCloudTasksSettings()).use { client ->
 
@@ -51,7 +52,6 @@ class Broker {
                         throw e
                     }
                 }
-
             }
         }
     }

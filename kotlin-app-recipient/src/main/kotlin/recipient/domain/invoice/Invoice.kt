@@ -12,19 +12,19 @@ data class Invoice(
     val senderInvoiceUUID: SenderInvoiceUUID,
     val recipientUUID: RecipientUUID,
     val senderUUID: SenderUUID,
-    val registeredAt: RegisteredAt,
+    val registeredAt: RegisteredAt
 ) {
     companion object {
         fun of(
             senderInvoiceUUID: SenderInvoiceUUID,
             recipientUUID: RecipientUUID,
-            senderUUID: SenderUUID,
+            senderUUID: SenderUUID
         ) = Invoice(
             InvoiceUUID.random(),
             senderInvoiceUUID,
             recipientUUID,
             senderUUID,
-            RegisteredAt.now(),
+            RegisteredAt.now()
         )
     }
 }
@@ -41,5 +41,3 @@ data class RegisteredAt @JsonCreator(mode = JsonCreator.Mode.DELEGATING) constru
         fun now() = RegisteredAt(OffsetDateTime.now())
     }
 }
-
-

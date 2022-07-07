@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets
 open class CloudRunSubscriber(private val url: String, private val queuePath: String) : Subscriber {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    override fun notify(message: String,traceContext: TraceContext) {
+    override fun notify(message: String, traceContext: TraceContext) {
         val oidcTokenBuilder = OidcToken.newBuilder().setServiceAccountEmail(settings.serviceAccount)
 
         val task = Task.newBuilder()
@@ -25,7 +25,8 @@ open class CloudRunSubscriber(private val url: String, private val queuePath: St
                     .setUrl(url)
                     .setOidcToken(oidcTokenBuilder)
                     .setHttpMethod(HttpMethod.POST)
-                    .build()).build()
+                    .build()
+            ).build()
 
         CloudTasksClient.create(buildCloudTasksSettings()).use { client ->
             val createdTask = client.createTask(queuePath, task)
