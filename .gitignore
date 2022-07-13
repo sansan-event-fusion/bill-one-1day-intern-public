@@ -20,8 +20,6 @@ test/the-files-to-test.generated.js
 chrome-user-data
 *.sublime-project
 *.sublime-workspace
-#.idea
-#*.iml
 # .vscode
 *.swp
 *.swo
