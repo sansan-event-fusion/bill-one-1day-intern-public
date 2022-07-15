@@ -27,6 +27,22 @@ winget を用いてインストールできます。
 winget install Microsoft.OpenJDK.11
 ```
 
+### PostgreSQL
+
+`psql` コマンドを用いてサンプルデータをインポートするため、PostgreSQL をインストールします。
+
+#### macOS
+
+```shell
+brew install postgresql
+```
+
+#### Windows
+
+```shell
+winget install PostgreSQL.PostgreSQL
+```
+
 ### Code Editor
 
 以下のどちらかを想定していますが、アプリケーションの実行やテストは CLI 上で完結するため、お好きなものをご準備ください。
