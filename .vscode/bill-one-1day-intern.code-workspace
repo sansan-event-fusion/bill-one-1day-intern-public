@@ -1,0 +1,27 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": "../"
+    },
+    {
+      "name": "kotlin-app-recipient",
+      "path": "../kotlin-app-recipient"
+    },
+    {
+      "name": "kotlin-app-sender",
+      "path": "../kotlin-app-sender"
+    },
+    {
+      "name": "react-app",
+      "path": "../react-app"
+    },
+  ],
+  "extensions": {
+    "recommendations": [
+      "fwcd.kotlin",
+      "vscjava.vscode-java-pack",
+      "esbenp.prettier-vscode"
+    ]
+  }
+}

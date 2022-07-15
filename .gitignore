@@ -20,7 +20,6 @@ test/the-files-to-test.generated.js
 chrome-user-data
 *.sublime-project
 *.sublime-workspace
-# .vscode
 *.swp
 *.swo
 
@@ -43,6 +42,7 @@ packages/react-devtools-scheduling-profiler/dist
 **/build/
 !src/**/build/
 out/
+bin/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -54,3 +54,4 @@ gradle-app.setting
 .gradletasknamecache
 
 !.gitkeep
+!.vscode/*.code-workspace

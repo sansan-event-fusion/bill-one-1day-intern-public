@@ -1,5 +1,11 @@
 {
+  "files.exclude": {
+    "node_modules/": true
+  },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": ["source.organizeImports", "source.fixAll.eslint"]
+  "editor.codeActionsOnSave": [
+    "source.organizeImports",
+    "source.fixAll.eslint"
+  ]
 }
