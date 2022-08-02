@@ -45,10 +45,22 @@ winget install PostgreSQL.PostgreSQL
 
 ### Code Editor
 
-以下のどちらかを想定していますが、アプリケーションの実行やテストは CLI 上で完結するため、お好きなものをご準備ください。
+アプリケーションの実行やテストは CLI 上で完結するため、お好きな Editor をご準備ください。
+Debugger を用いて開発する場合 IDEA を利用されることを推奨します。
 
 - IntelliJ IDEA Community Edition: [https://www.jetbrains.com/ja-jp/idea/](https://www.jetbrains.com/ja-jp/idea/)
 - Visual Studio Code: [https://code.visualstudio.com/](https://code.visualstudio.com/)
+
+#### VSCode の場合
+
+本リポジトリを Workspace として開くと、推奨の拡張機能が読み込めます。
+この設定を行うことで、Kotlin コードのハイライトや補完、コードジャンプが可能となります。
+
+1. VSCode で`bill-one-1day-intern-public`を開く
+2. `.vscode/bill-one-1day-intern.code-workspace` を開く
+3. 右下に表示される`Open workspace` を押下
+4. 拡張機能タブから推奨拡張機能をインストール
+5. Kotlin の設定が完了するまで待機
 
 ## 環境構築
 
