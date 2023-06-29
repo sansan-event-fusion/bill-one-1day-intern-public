@@ -30,7 +30,9 @@ export const SenderInvoices: React.FC = () => {
   useEffect(() => {
     if (selectedSenderUUID === null) return;
     const fn = async () => {
-      await fetchSenderInvoices(selectedSenderUUID).then(setInvoices);
+      await fetchSenderInvoices(selectedSenderUUID)
+        .then(setInvoices)
+        .catch((e) => console.error(e));
     };
     fn();
   }, [selectedSenderUUID]);

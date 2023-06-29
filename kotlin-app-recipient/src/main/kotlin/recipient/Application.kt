@@ -86,10 +86,9 @@ fun Application.module(testing: Boolean = false, settingsTest: Settings = settin
                 if (i == 0) log.error(stackTrace) else log.info(stackTrace)
             }
 
-            @OptIn(io.ktor.server.engine.EngineAPI::class)
+            @OptIn(EngineAPI::class)
             call.respond(
-                @OptIn(io.ktor.util.KtorExperimentalAPI::class) defaultExceptionStatusCode(cause)
-                    ?: HttpStatusCode.InternalServerError
+                defaultExceptionStatusCode(cause) ?: HttpStatusCode.InternalServerError
             )
 
             // コントローラテストでの例外発生時にエラー内容を確認したいために、再スローする

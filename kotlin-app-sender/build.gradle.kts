@@ -5,17 +5,17 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 group = "com.sansan.billone"
 version = "0.0.1-SNAPSHOT"
 
-val kotlinVersion = "1.7.0"
-val ktorVersion = "1.5.3"
-val jacksonVersion = "2.12.2"
+val kotlinVersion = "1.8.10"
+val ktorVersion = "1.6.8"
+val jacksonVersion = "2.14.2"
 val logbackVersion = "1.2.3"
 val logbackContribVersion = "0.1.5"
 val postgresqlVersion = "42.2.19"
-val hikariCPVersion = "3.4.5"
+val hikariCPVersion = "5.0.1"
 val jdbiVersion = "3.18.0"
 val gcpPostgresVersion = "1.2.1"
-val gcpStorageVersion = "1.113.14"
-val gcpTasksVersion = "1.32.1"
+val gcpStorageVersion = "2.20.1"
+val gcpTasksVersion = "2.12.0"
 val csvVersion = "1.8"
 val unicodeVersion = "67.1"
 val fuelVersion = "2.3.1"
@@ -28,14 +28,14 @@ val pdfImageioVersion = "3.0.3"
 // test
 val assertjVersion = "3.19.0"
 val dbSetupVersion = "2.1.0"
-val mockkVersion = "1.11.0"
+val mockkVersion = "1.13.4"
 val jsonFuzzyMatchVersion = "0.4.1"
 
 plugins {
     java
     application
     id("org.jetbrains.kotlin.jvm") version "1.7.0"
-    id("com.github.johnrengelman.shadow") version "5.2.0"
+    id("com.github.johnrengelman.shadow") version "7.1.0"
     id("org.flywaydb.flyway") version "7.6.0"
 }
 

@@ -85,9 +85,9 @@ fun Application.module(testing: Boolean = false, settingsTest: Settings = settin
                 if (i == 0) log.error(stackTrace) else log.info(stackTrace)
             }
 
-            @OptIn(io.ktor.server.engine.EngineAPI::class)
+            @OptIn(EngineAPI::class)
             call.respond(
-                @OptIn(io.ktor.util.KtorExperimentalAPI::class) defaultExceptionStatusCode(cause)
+                defaultExceptionStatusCode(cause)
                     ?: HttpStatusCode.InternalServerError
             )
 
