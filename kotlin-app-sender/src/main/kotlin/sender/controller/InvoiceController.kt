@@ -12,6 +12,7 @@ import sender.application_service.SenderInvoiceRegisterService
 import sender.domain.sender.SenderUUID
 import sender.domain.sender_invoice.SenderInvoiceUUID
 import sender.infrastructure.sender_invoice.SenderInvoiceStorage
+import sender.query_service.SenderInvoiceQueryService
 import sender.util.getDomainEventContext
 import java.util.*
 
@@ -26,7 +27,10 @@ class SenderInvoiceUrlLocation(val senderUUID: UUID, val senderInvoiceUUID: UUID
 
 fun Route.invoiceController() {
     // 課題1: 送付アカウント側の請求書一覧を取得する
-    get<InvoiceLocation> {}
+    get<InvoiceLocation> {
+        val result = SenderInvoiceQueryService.getBySenderUUID(SenderUUID((it.senderUUID)))
+        call.respond(result)
+    }
 
     // 課題2: 請求書のアップロード
     post<SenderInvoicesLocation> {
