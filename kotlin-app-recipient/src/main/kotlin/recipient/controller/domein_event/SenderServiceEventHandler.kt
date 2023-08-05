@@ -39,6 +39,7 @@ data class SenderInvoice(
     val senderUUID: String,
     val recipientUUID: String,
     val senderInvoiceUUID: String,
+    val memo: String,
     val senderSideInvoicePath: SenderSideInvoicePath
 ){
     fun toInvoiceRegisterArgs(domainEventContext: DomainEventContext):InvoiceRegisterArgs{
@@ -46,6 +47,7 @@ data class SenderInvoice(
             SenderInvoiceUUID(UUID.fromString(senderInvoiceUUID)),
             RecipientUUID(UUID.fromString(recipientUUID)),
             SenderUUID(UUID.fromString(senderUUID)),
+            memo,
             StorageObjectPath(senderSideInvoicePath.bucket, senderSideInvoicePath.path),
             domainEventContext
             )

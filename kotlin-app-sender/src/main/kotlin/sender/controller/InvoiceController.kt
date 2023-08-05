@@ -42,6 +42,7 @@ fun Route.invoiceController() {
         val multipartData = call.receiveMultipart()
         var senderUUID:SenderUUID? = null
         var recipientUUID:RecipientUUID? = null
+        var memo: String? = null
         var pdf: ByteArray? = null
         multipartData.forEachPart { part ->
             when (part) {
@@ -52,6 +53,9 @@ fun Route.invoiceController() {
                         }
                          "recipientUUID" -> {
                              recipientUUID = RecipientUUID(UUID.fromString(part.value))
+                         }
+                         "memo" -> {
+                             memo = part.value
                          }
                     }
                 }
@@ -66,8 +70,8 @@ fun Route.invoiceController() {
             }
             part.dispose()
         }
-        if((recipientUUID != null) && (senderUUID != null) && (pdf != null)){
-            SenderInvoiceRegisterService.register(InvoiceRegisterArgs(senderUUID!!, recipientUUID!!, pdf!!, call.getDomainEventContext()))
+        if((recipientUUID != null) && (senderUUID != null) && (pdf != null) && (memo != null)){
+            SenderInvoiceRegisterService.register(InvoiceRegisterArgs(senderUUID!!, recipientUUID!!, memo!!, pdf!!, call.getDomainEventContext()))
             call.respond(HttpStatusCode.OK)
         }else{
             call.respond(HttpStatusCode.BadRequest)

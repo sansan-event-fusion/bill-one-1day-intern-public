@@ -139,6 +139,20 @@ class SenderInvoiceUploadAndSendTest {
                                     )
                                         .toString()
                                 )
+                            ),
+                            PartData.FormItem(
+                                SenderInvoiceMemoTableFixture().memo,
+                                {},
+                                headersOf(
+                                    HttpHeaders.ContentDisposition,
+                                    ContentDisposition.Inline.withParameter(
+                                        ContentDisposition
+                                            .Parameters
+                                            .Name,
+                                        "memo"
+                                    )
+                                        .toString()
+                                )
                             )
                         )
                     )
@@ -157,6 +171,13 @@ class SenderInvoiceUploadAndSendTest {
                             .isEqualTo(RecipientTableFixture().recipient_uuid)
                         Assertions.assertThat(it.senderUUID)
                             .isEqualTo(SenderTableFixture().sender_uuid)
+                    }
+
+                    val senderInvoiceMemo = getSenderInvoiceMemo(handle)
+                    Assertions.assertThat(senderInvoiceMemo.size).isEqualTo(1)
+                    senderInvoiceMemo.first().let {
+                        Assertions.assertThat(it.memo)
+                            .isEqualTo(SenderInvoiceMemoTableFixture().memo)
                     }
 
                     // Storageにファイルが保存されていることを確認
@@ -186,6 +207,7 @@ class SenderInvoiceUploadAndSendTest {
                             "senderUUID" : "389afb90-42cd-4739-a1e1-0062a1d6285c",
                             "recipientUUID" : "015bdd8a-9aee-4545-8e4b-95b48a482559",
                             "senderInvoiceUUID" : "#uuid",
+                            "memo" : "test memo",
                             "senderSideInvoicePath" : {
                                 "path" : "#string",
                                 "bucket" : "sender-test-bucket"
@@ -216,9 +238,24 @@ class SenderInvoiceUploadAndSendTest {
         return handle.createQuery(sql).mapTo(SenderInvoiceRow::class.java).list()
     }
 
+    private fun getSenderInvoiceMemo(handle: Handle): List<SenderInvoiceMemoRow> {
+        val sql = """
+            SELECT
+                sender_invoice_uuid,
+                memo
+            FROM sender_invoice_memo
+            """.trimIndent()
+        return handle.createQuery(sql).mapTo(SenderInvoiceMemoRow::class.java).list()
+    }
+
     data class SenderInvoiceRow(
         val senderInvoiceUUID: UUID,
         val recipientUUID: UUID,
         val senderUUID: UUID
+    )
+
+    data class SenderInvoiceMemoRow(
+        val senderInvoiceUUID: UUID,
+        val memo: String
     )
 }

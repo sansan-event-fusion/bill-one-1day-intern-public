@@ -5,14 +5,12 @@ import com.google.cloud.storage.BlobInfo
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import org.assertj.core.api.Assertions
+import org.assertj.core.data.Index
 import org.jdbi.v3.core.Handle
 import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Test
-import recipient.fixture.table.RecipientTableFixture
-import recipient.fixture.table.SenderTableFixture
-import recipient.fixture.table.buildRecipientOperation
-import recipient.fixture.table.buildSenderOperation
+import recipient.fixture.table.*
 import recipient.module
 import recipient.testing.Database
 import recipient.testing.testSettings
@@ -65,6 +63,7 @@ class SenderInvoiceReflectPostTest {
                 "senderUUID" : "${SenderTableFixture().sender_uuid}",
                 "recipientUUID" : "${RecipientTableFixture().recipient_uuid}",
                 "senderInvoiceUUID" : "$senderInvoiceUUID",
+                "memo" : "${InvoiceMemoTableFixture().memo}",
                 "senderSideInvoicePath" : {
                     "path" : "${senderInvoiceBlobId.name}",
                     "bucket" : "${senderInvoiceBlobId.bucket}"
@@ -99,6 +98,12 @@ class SenderInvoiceReflectPostTest {
                         Assertions.assertThat(it.senderInvoiceUUID).isEqualTo(senderInvoiceUUID)
                     }
 
+                    val invoiceMemos = getInvoiceMemos(handle)
+                    Assertions.assertThat(invoiceMemos).hasSize(1)
+                        .satisfies({
+                                   Assertions.assertThat(it.memo).isEqualTo("test memo")
+                        }, Index.atIndex(0))
+
                     // Storageにファイルが保存されていることを確認
                     Assertions.assertThat(
                         getStorageObject(
@@ -128,10 +133,27 @@ class SenderInvoiceReflectPostTest {
         return handle.createQuery(sql).mapTo(InvoiceRow::class.java).list()
     }
 
+    private fun getInvoiceMemos(handle: Handle): List<InvoiceMemoRow> {
+        val sql =
+            """
+            SELECT
+                invoice_uuid,
+                memo
+            FROM invoice_memo
+            """.trimIndent()
+
+        return handle.createQuery(sql).mapTo(InvoiceMemoRow::class.java).list()
+    }
+
     data class InvoiceRow(
         val invoiceUUID: UUID,
         val senderInvoiceUUID: UUID,
         val recipientUUID: UUID,
         val senderUUID: UUID
+    )
+
+    data class InvoiceMemoRow(
+        val invoiceUUID: UUID,
+        val memo: String
     )
 }

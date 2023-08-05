@@ -10,7 +10,7 @@ data class SenderInvoiceTableFixture(
     val recipient_uuid: UUID = RecipientTableFixture().recipient_uuid,
     val sender_uuid: UUID = SenderTableFixture().sender_uuid,
     val registered_at: OffsetDateTime = OffsetDateTime.parse("2019-01-01T00:00:00Z"),
-    val created_at: OffsetDateTime = OffsetDateTime.parse("2019-01-01T00:00:00Z")
+    val created_at: OffsetDateTime = OffsetDateTime.parse("2019-01-01T00:00:00Z"),
 ) {
     fun _2枚目() = copy(
         sender_invoice_uuid = UUID.fromString("8c9f66c5-0308-4f12-a444-dcf4836d50c9"),

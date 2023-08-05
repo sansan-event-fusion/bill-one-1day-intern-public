@@ -59,6 +59,12 @@ class SenderInvoicesGetTest {
                                     .sender_uuid
                             )
                     )
+                ),
+                buildSenderInvoiceMemoOperation(
+                    listOf(
+                        SenderInvoiceMemoTableFixture(),
+                        SenderInvoiceMemoTableFixture()._2枚目()
+                    )
                 )
             )
         )
@@ -82,12 +88,14 @@ class SenderInvoicesGetTest {
                   "senderInvoiceUUID" : "a0a678d9-9fdd-4acb-9d89-e2345c69a016",
                   "recipientFullName" : "受領アカウント1",
                   "senderFullName" : "送付アカウント",
-                  "registeredAt" : "2019-01-01 09:00:00+09"
+                  "registeredAt" : "2019-01-01 09:00:00+09",
+                  "memo" : "test memo"
                 }, {
                   "senderInvoiceUUID" : "8c9f66c5-0308-4f12-a444-dcf4836d50c9",
                   "recipientFullName" : "受領アカウント2",
                   "senderFullName" : "送付アカウント",
-                  "registeredAt" : "2019-01-01 09:00:00+09"
+                  "registeredAt" : "2019-01-01 09:00:00+09",
+                  "memo" : "test memo 2"
                 } ]
                         """.trimIndent()
                     )
@@ -112,7 +120,8 @@ class SenderInvoicesGetTest {
                   "senderInvoiceUUID" : "#uuid",
                   "recipientFullName" : "受領アカウント1",
                   "senderFullName" : "送付アカウント2",
-                  "registeredAt" : "2019-01-01 09:00:00+09"
+                  "registeredAt" : "2019-01-01 09:00:00+09",
+                  "memo" : null
                 } ]
                         """.trimIndent()
                     )

@@ -11,10 +11,12 @@ object InvoiceQueryService {
                 i.invoice_uuid,
                 r.full_name as recipient_full_name,
                 s.full_name as sender_full_name,
+                m.memo,
                 i.registered_at
             FROM invoice i
                 INNER JOIN recipient r ON i.recipient_uuid = r.recipient_uuid
                 INNER JOIN sender s ON i.sender_uuid = s.sender_uuid
+                LEFT JOIN invoice_memo m ON i.invoice_uuid = m.invoice_uuid
             WHERE i.recipient_uuid = :recipientUUID
         """.trimIndent()
 
@@ -31,5 +33,6 @@ data class InvoiceQueryGetResult(
     val invoiceUUID: UUID,
     val recipientFullName: String,
     val senderFullName: String,
+    val memo: String?,
     val registeredAt: String
 )

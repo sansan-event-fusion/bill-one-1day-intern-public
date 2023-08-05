@@ -31,7 +31,8 @@ class InvoicesGetTest {
             listOf(
                 buildRecipientOperation(listOf(RecipientTableFixture())),
                 buildSenderOperation(listOf(SenderTableFixture())),
-                buildInvoiceOperation(listOf(InvoiceTableFixture()))
+                buildInvoiceOperation(listOf(InvoiceTableFixture())),
+                buildInvoiceMemoOperation(listOf(InvoiceMemoTableFixture()))
             )
         )
     }
@@ -53,6 +54,7 @@ class InvoicesGetTest {
                   "invoiceUUID" : "cfc3a21f-6ac9-47ff-b76b-6cffad384d0a",
                   "recipientFullName" : "受領アカウント1",
                   "senderFullName" : "送付アカウント",
+                  "memo" : "test memo",
                   "registeredAt" : "2019-01-01 09:00:00+09"
                 } ]
                         """.trimIndent()

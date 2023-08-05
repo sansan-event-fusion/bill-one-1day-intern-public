@@ -15,6 +15,7 @@ import org.jdbi.v3.core.Handle
 import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Test
+import sender.domain.sender_invoice.SenderInvoiceMemo
 import sender.fixture.table.*
 import sender.module
 import sender.testing.Database
@@ -136,6 +137,20 @@ class SenderInvoiceUploadTest {
                                     )
                                         .toString()
                                 )
+                            ),
+                            PartData.FormItem(
+                                SenderInvoiceMemoTableFixture().memo,
+                                {},
+                                headersOf(
+                                    HttpHeaders.ContentDisposition,
+                                    ContentDisposition.Inline.withParameter(
+                                        ContentDisposition
+                                            .Parameters
+                                            .Name,
+                                        "memo"
+                                    )
+                                        .toString()
+                                )
                             )
                         )
                     )
@@ -154,6 +169,12 @@ class SenderInvoiceUploadTest {
                             .isEqualTo(RecipientTableFixture().recipient_uuid)
                         Assertions.assertThat(it.senderUUID)
                             .isEqualTo(SenderTableFixture().sender_uuid)
+                    }
+                    val senderInvoiceMemo = getSenderInvoiceMemo(handle)
+                    Assertions.assertThat(senderInvoiceMemo.size).isEqualTo(1)
+                    senderInvoiceMemo.first().let {
+                        Assertions.assertThat(it.memo)
+                            .isEqualTo(SenderInvoiceMemoTableFixture().memo)
                     }
 
                     // Storageにファイルが保存されていることを確認
@@ -184,9 +205,24 @@ class SenderInvoiceUploadTest {
         return handle.createQuery(sql).mapTo(SenderInvoiceRow::class.java).list()
     }
 
+    private fun getSenderInvoiceMemo(handle: Handle): List<SenderInvoiceMemoRow> {
+        val sql = """
+            SELECT
+                sender_invoice_uuid,
+                memo
+            FROM sender_invoice_memo
+            """.trimIndent()
+        return handle.createQuery(sql).mapTo(SenderInvoiceMemoRow::class.java).list()
+    }
+
     data class SenderInvoiceRow(
         val senderInvoiceUUID: UUID,
         val recipientUUID: UUID,
         val senderUUID: UUID
+    )
+
+    data class SenderInvoiceMemoRow(
+        val senderInvoiceUUID: UUID,
+        val memo: String
     )
 }
