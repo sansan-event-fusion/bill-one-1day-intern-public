@@ -1,5 +1,6 @@
 package sender.domain.sender_invoice
 
+import com.google.cloud.storage.BlobId
 import sender.domain.recipient.RecipientUUID
 import sender.domain.sender.SenderUUID
 import sender.domain_event.DomainEvent
@@ -10,4 +11,13 @@ data class SenderInvoiceRegistered(
     val recipientUUID: RecipientUUID,
     val senderUUID: SenderUUID,
     val senderSideInvoicePath: StorageObjectPath
-) : DomainEvent
+) : DomainEvent{
+    companion object {
+        fun of(senderInvoice: SenderInvoice, blobId: BlobId) = SenderInvoiceRegistered(
+            senderInvoice.senderInvoiceUUID,
+            senderInvoice.recipientUUID,
+            senderInvoice.senderUUID,
+            StorageObjectPath.fromBlobId(blobId)
+        )
+    }
+}
